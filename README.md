@@ -151,6 +151,20 @@ use native screens or a Trusted Web Activity.
 - Cleartext HTTP is allowed by default for compatibility — set
   `allow_cleartext_traffic=false` before publishing.
 
+## Troubleshooting
+
+| Error | Fix |
+|---|---|
+| `'-' is not a valid file-based resource name character` | Android resource file names may only use lowercase `a-z`, `0-9`, `_`. Rename `my-logo.png` → `my_logo.png`. |
+| `app_id ... is not a valid Android application id` | No dashes or spaces, at least two segments: `com.yourname.yourapp`. |
+| `duplicate resources: drawable/logo` | Only one `logo.xml` **or** `logo.png` may exist. Delete the one you don't use. |
+| `app_logo = "x" not found` | The drawable doesn't exist in `app/src/main/res/drawable/`. |
+| Launcher icon looks cropped or tiny | Use a 512×512 PNG with ~17% transparent padding and the artwork in the centre 66%. |
+| New config values not applied | Android Studio: **Sync Project with Gradle Files**, then rebuild. |
+
+The build checks the config for you, so most mistakes fail fast with a readable
+message instead of a stack trace.
+
 ## License
 
 [MIT](LICENSE) © 2026 johirxofficial
