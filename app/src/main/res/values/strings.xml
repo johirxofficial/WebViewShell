@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WebViewShell</string>
+    <!-- In-app copy only. The app name lives in app-config.properties. -->
     <string name="error_title">Page didn\'t load</string>
     <string name="error_message">Check your internet connection, then try again.</string>
     <string name="retry">Try again</string>

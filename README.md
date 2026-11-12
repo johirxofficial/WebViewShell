@@ -1,14 +1,24 @@
 # WebViewShell
 
-A clean, no-nonsense **Android WebView app template**. Point it at any website and
-you get an app that feels native: no URL bar, no browser menu, no "open in Chrome"
-hand-offs — just the site, edge to edge.
+A clean Android **WebView app template**. Point it at any website and you get an
+app that feels native: no URL bar, no browser menu, no hand-offs to Chrome — just
+the site, edge to edge.
 
-Change **one line**, build, and it's your app.
+### Everything you can customise lives in one file
 
-```xml
-<!-- app/src/main/res/values/app_config.xml -->
-<string name="start_url" translatable="false">https://your-site.com</string>
+```
+app-config.properties      <-- the only file you edit
+```
+
+URL, app name, package name, version, logo, every colour, every behaviour
+toggle. Nothing else needs to change — no Kotlin, no XML.
+
+```properties
+start_url=https://your-site.com
+app_name=My App
+app_id=com.yourname.myapp
+app_logo=logo
+color_brand=#4338CA
 ```
 
 <p align="left">
@@ -20,125 +30,126 @@ Change **one line**, build, and it's your app.
 
 ---
 
-## Why this exists
+## Make it yours in 60 seconds
 
-Most "turn my website into an app" templates are either full of ads/analytics, or
-they break the moment a user plays a video, uploads a file or opens a link. This
-one is a single readable Kotlin file that handles the boring-but-critical stuff
-properly.
+1. Open **`app-config.properties`** and change `start_url`, `app_name`,
+   `app_id`, colours — whatever you like.
+2. Drop your logo into `app/src/main/res/drawable/` as **`logo.png`**
+   (512×512, transparent background) or `logo.xml` (vector). Keep
+   `app_logo=logo`, or rename the file and update that line.
+3. Build.
 
-## What works out of the box
-
-| Feature | Status |
-|---|---|
-| Any website (`http`, `https`, single-page apps, web apps) | ✅ |
-| HTML5 video & audio, autoplay | ✅ |
-| Fullscreen video (immersive, screen stays awake) | ✅ |
-| Background audio (keeps playing when you leave the app) | ✅ |
-| Popups / `target="_blank"` / `window.open()` | ✅ opens in the same screen |
-| File uploads (`<input type="file">`, multiple files) | ✅ |
-| Downloads (PDF, zip, images …) via the system download manager | ✅ |
-| Camera & microphone for WebRTC (video calls, voice notes) | ✅ |
-| Geolocation | ✅ |
-| Pull-to-refresh, back-button history, offline screen with retry | ✅ |
-| Dark mode (system), adaptive launcher icon, splash screen | ✅ |
-| Browser UI (URL bar, tabs, menu buttons) | ❌ by design |
-| Handing links to an external browser | ❌ by design |
-
-Everything is configurable in `app_config.xml` — no code editing needed for the
-common cases:
-
-| Setting | Default | Meaning |
-|---|---|---|
-| `start_url` | `https://example.com` | The site the app opens |
-| `enable_pull_to_refresh` | `true` | Pull down to reload |
-| `keep_audio_playing_in_background` | `true` | Audio/video keeps playing when app is backgrounded |
-| `open_non_web_links_in_other_apps` | `false` | When `false` (`tel:`, `mailto:`, `market:` …) are blocked, so the user never leaves the app |
-| `show_loading_bar` | `true` | Thin progress bar |
-| `allow_cleartext_traffic` | `true` | Allow plain `http://` sites |
-| `enable_pinch_zoom` | `false` | Pinch-to-zoom (off feels more app-like) |
-
-App name: `app/src/main/res/values/strings.xml` → `app_name`.
-
-## Make it yours (3 steps)
-
-1. `start_url` in `app/src/main/res/values/app_config.xml`
-2. `app_name` in `app/src/main/res/values/strings.xml`
-3. Optional: brand colour `brand` in `app/src/main/res/values/colors.xml` and
-   `applicationId` / `namespace` in `app/build.gradle.kts`
-
-## Build
-
-### Android Studio
-Open the folder, let Gradle sync, press **Run**.
-
-### Command line
 ```bash
 ./gradlew assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### GitHub Actions (no local toolchain)
-Every push builds a debug APK. **Actions** → latest **Build APK** run → download
-the `WebViewShell-debug-apk` artifact.
+> In Android Studio: after editing the properties file, click **Sync Project with
+> Gradle Files** (or just hit Run) so Gradle picks up the new values.
 
-### Release build
-Release is unsigned on purpose. Add your own keystore:
+## The config file
 
-```kotlin
-signingConfigs {
-    create("release") {
-        storeFile = file("../my-release.jks")
-        storePassword = System.getenv("KEYSTORE_PASSWORD")
-        keyAlias = System.getenv("KEY_ALIAS")
-        keyPassword = System.getenv("KEY_PASSWORD")
-    }
-}
-buildTypes { release { signingConfig = signingConfigs.getByName("release") } }
-```
+| Key | Default | What it does |
+|---|---|---|
+| `start_url` | `https://example.com` | Website the app opens |
+| `app_name` | `WebViewShell` | Name under the launcher icon |
+| `app_id` | `com.webviewshell` | Package / application id — **use your own** |
+| `version_code` | `1` | Integer, bump on every release |
+| `version_name` | `1.0.0` | Shown in app info |
+| `app_logo` | `logo` | Drawable name used for icon, splash and error screen |
+| `color_brand` | `#4338CA` | Primary colour (buttons, progress, accents) |
+| `color_brand_dark` | `#312E81` | Darker brand shade |
+| `color_brand_light` | `#6366F1` | Lighter brand shade |
+| `color_on_brand` | `#FFFFFF` | Text/icon colour on top of brand colour |
+| `color_background` | `#FFFFFF` | App background |
+| `color_text_primary` | `#111827` | Error screen title |
+| `color_text_secondary` | `#6B7280` | Error screen body |
+| `color_status_bar` | *(= brand)* | Status bar colour |
+| `color_icon_background` | *(= brand)* | Adaptive icon background |
+| `color_splash_background` | *(= brand)* | Splash screen background |
+| `enable_pull_to_refresh` | `true` | Pull down to reload |
+| `keep_audio_playing_in_background` | `true` | Audio/video keeps playing when app is backgrounded |
+| `open_non_web_links_in_other_apps` | `false` | `false` keeps `tel:`/`mailto:`/`market:` inside/blocks them |
+| `show_loading_bar` | `true` | Thin progress bar |
+| `allow_cleartext_traffic` | `true` | Allow plain `http://` sites |
+| `enable_pinch_zoom` | `false` | Pinch to zoom |
+
+Colours accept `#RGB`, `#RRGGBB` or `#AARRGGBB`. Booleans accept `true` / `false`.
+
+### About the package name
+
+`app_id` is what users and Google Play see. The Kotlin source stays in the
+internal package `com.webviewshell` so you never have to refactor code — that is a
+supported Android setup (namespace ≠ application id). If you *do* want the source
+package renamed too, use Android Studio's *Refactor → Rename* on the package and
+update `namespace` in `app/build.gradle.kts`.
+
+## What works out of the box
+
+| Feature | Status |
+|---|---|
+| Any website (`http`, `https`, SPAs, web apps) | ✅ |
+| HTML5 video & audio, autoplay | ✅ |
+| Fullscreen video (immersive, screen stays awake) | ✅ |
+| Background audio when leaving the app | ✅ |
+| Popups / `target="_blank"` / `window.open()` | ✅ same screen |
+| File uploads (`<input type="file">`, multiple) | ✅ |
+| Downloads (PDF, zip, images …) via DownloadManager | ✅ |
+| Camera & microphone for WebRTC | ✅ |
+| Geolocation | ✅ |
+| Pull-to-refresh, back-button history, offline screen | ✅ |
+| Adaptive icon, splash screen, flat native styling | ✅ |
+| URL bar / tabs / browser menu / external hand-offs | ❌ by design |
+
+## Build
+
+- **Android Studio**: open the folder, sync, Run.
+- **CLI**: `./gradlew assembleDebug` → `app/build/outputs/apk/debug/`.
+- **GitHub Actions**: every push builds a debug APK — **Actions** → latest
+  **Build APK** run → download the `WebViewShell-debug-apk` artifact.
+
+Release builds are unsigned on purpose; add your keystore in
+`app/build.gradle.kts` → `signingConfigs`.
 
 ## Project structure
 
 ```
 WebViewShell/
+├── app-config.properties                       # <-- the one file you edit
 ├── app/src/main/
-│   ├── java/com/webviewshell/MainActivity.kt   # the whole app, ~400 readable lines
-│   ├── res/values/app_config.xml               # <-- change the URL here
-│   ├── res/values/strings.xml                  # app name, UI copy
-│   ├── res/layout/activity_main.xml            # WebView + progress + error + fullscreen layer
-│   └── AndroidManifest.xml                     # permissions
-├── .github/workflows/build.yml                 # CI that ships the APK
-└── README.md
+│   ├── java/com/webviewshell/MainActivity.kt   # the whole app, ~400 lines
+│   ├── res/drawable/logo.xml                   # default logo (replace it)
+│   ├── res/layout/activity_main.xml            # WebView + progress + error + fullscreen
+│   └── AndroidManifest.xml
+└── .github/workflows/build.yml                 # CI that ships the APK
 ```
 
-## How the "stays in the app" rule works
+## How "stays in the app" works
 
-`shouldOverrideUrlLoading` never returns `true` for web URLs, so navigation always
-happens inside the WebView. Non-web schemes (`tel:`, `mailto:`, `intent:`,
-`market:`) are blocked with a short toast unless you flip
-`open_non_web_links_in_other_apps` to `true`. Downloads are handled by Android's
-`DownloadManager` (a system service, not another browser).
+`shouldOverrideUrlLoading` never hands web URLs to another app, so navigation
+always happens inside the WebView. Popups are re-routed into the same screen.
+Downloads go through Android's `DownloadManager` (a system service, not a
+browser). Non-web schemes are blocked with a toast unless you flip
+`open_non_web_links_in_other_apps`.
 
 ## Known WebView limits (not fixable from the app)
 
 - **Google / Facebook "Sign in with"** is blocked inside embedded WebViews by the
-  providers themselves. Use email/OTP login, or Custom Tabs, for those flows.
-- **DRM video** (Netflix, Prime, Spotify) needs Widevine L1 + a native player;
-  WebView only plays clear HTML5 media.
+  providers themselves. Use email/OTP login or Custom Tabs for those flows.
+- **DRM video** (Netflix, Prime, Spotify) needs Widevine L1 + a native player.
 - **`blob:` downloads** and file-system APIs need a JavaScript bridge.
-- **Push notifications** and aggressive background sync need a native service.
+- **Push notifications** need a native service.
 - Some **payment gateways** refuse WebView user agents.
 
-If your site depends on one of these, a WebView shell is the wrong tool and you
-should use native screens (or a Trusted Web Activity).
+If your product depends on one of these, a WebView shell is the wrong tool —
+use native screens or a Trusted Web Activity.
 
 ## Security notes
 
 - SSL errors are cancelled, never bypassed.
-- `allowFileAccess` / `allowContentAccess` are off, no `@JavascriptInterface`
-  bridge is exposed.
-- Cleartext HTTP is enabled by default for compatibility — set
-  `allow_cleartext_traffic` to `false` for a public release.
+- No `@JavascriptInterface` bridge is exposed; file/content access is off.
+- Cleartext HTTP is allowed by default for compatibility — set
+  `allow_cleartext_traffic=false` before publishing.
 
 ## License
 

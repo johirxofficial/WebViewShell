@@ -28,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WebViewShell.Starting"
-        android:usesCleartextTraffic="@bool/allow_cleartext_traffic">
+        android:usesCleartextTraffic="${cleartextTraffic}">
 
         <activity
             android:name=".MainActivity"
