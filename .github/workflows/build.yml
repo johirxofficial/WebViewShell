@@ -41,7 +41,11 @@ jobs:
           MANIFEST_APP_ID=$(grep -o 'package="[^"]*"' "$MANIFEST" | head -n 1 | cut -d'"' -f2)
           echo "app_id (config)   = $CONFIG_APP_ID"
           echo "app_id (manifest) = $MANIFEST_APP_ID"
-          test "$CONFIG_APP_ID" = "$MANIFEST_APP_ID"
+          # debug builds append ".debug" via applicationIdSuffix
+          case "$MANIFEST_APP_ID" in
+            "$CONFIG_APP_ID"|"$CONFIG_APP_ID".debug) echo "app_id OK" ;;
+            *) echo "app_id mismatch"; exit 1 ;;
+          esac
           CONFIG_NAME=$(grep -E '^app_name=' app-config.properties | cut -d= -f2- | sed 's/^ *//;s/ *$//')
           echo "app_name (config) = $CONFIG_NAME"
           grep -q "app_name" "$(find app/build/generated -name 'gradleResValues.xml' | head -n 1)"
