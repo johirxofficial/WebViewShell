@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WebViewShell</string>
+    <string name="error_title">Page didn\'t load</string>
+    <string name="error_message">Check your internet connection, then try again.</string>
+    <string name="retry">Try again</string>
+    <string name="link_not_supported">This kind of link can\'t be opened here</string>
+    <string name="download_started">Download started</string>
+    <string name="download_failed">Couldn\'t start the download</string>
+    <string name="download_unsupported">This download isn\'t supported</string>
+    <string name="download_permission_denied">Storage permission is needed to save the file</string>
+</resources>

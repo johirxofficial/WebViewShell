@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ===================================================================
+         THIS IS THE ONLY FILE MOST PEOPLE NEED TO EDIT.
+
+         1. Change start_url to your website.
+         2. (Optional) change app_name in res/values/strings.xml.
+         3. Build. Done - you now have your own app.
+         =================================================================== -->
+
+    <string name="start_url" translatable="false">https://example.com</string>
+
+    <!-- Let users pull down from the top of the page to reload. -->
+    <bool name="enable_pull_to_refresh">true</bool>
+
+    <!-- Keep audio/video sound playing when the user switches apps.
+         Set to false if you also want playback to pause in the background. -->
+    <bool name="keep_audio_playing_in_background">true</bool>
+
+    <!-- false = every link stays inside the app (recommended).
+         true  = non-web links such as tel:, mailto:, market: open in other apps. -->
+    <bool name="open_non_web_links_in_other_apps">false</bool>
+
+    <!-- Thin loading bar under the status bar. -->
+    <bool name="show_loading_bar">true</bool>
+
+    <!-- Allow http:// sites (some intranets and older sites still use it). -->
+    <bool name="allow_cleartext_traffic">true</bool>
+
+    <!-- true = pinch to zoom is enabled (some users like it). -->
+    <bool name="enable_pinch_zoom">false</bool>
+</resources>
