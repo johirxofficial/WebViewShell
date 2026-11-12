@@ -33,6 +33,21 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
+      - name: Verify app-config.properties was applied
+        run: |
+          set -e
+          MANIFEST=$(find app/build/intermediates -name AndroidManifest.xml -path '*merged_manifest*' | head -n 1)
+          CONFIG_APP_ID=$(grep -E '^app_id=' app-config.properties | cut -d= -f2- | tr -d '[:space:]')
+          MANIFEST_APP_ID=$(grep -o 'package="[^"]*"' "$MANIFEST" | head -n 1 | cut -d'"' -f2)
+          echo "app_id (config)   = $CONFIG_APP_ID"
+          echo "app_id (manifest) = $MANIFEST_APP_ID"
+          test "$CONFIG_APP_ID" = "$MANIFEST_APP_ID"
+          CONFIG_NAME=$(grep -E '^app_name=' app-config.properties | cut -d= -f2- | sed 's/^ *//;s/ *$//')
+          echo "app_name (config) = $CONFIG_NAME"
+          grep -q "app_name" "$(find app/build/generated -name 'gradleResValues.xml' | head -n 1)"
+          grep -o 'usesCleartextTraffic="[^"]*"' "$MANIFEST"
+          echo "logo alias:"; cat app/build/generated/appConfig/res/values/app_logo.xml
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
